@@ -47,7 +47,12 @@ const VideoPage = () => {
             <h1 className="text-2xl mb-8">Video {currentVideoIndex + 1}</h1>
             <div className="bg-white p-12 rounded-xl shadow-lg h-[70vh] inline-flex flex-col items-center justify-between">
                 <div className="mb-4">
-                    <video controls width="500" src={currentVideo.videoUrl} />
+                    <video
+                        controls
+                        width="500"
+                        autoPlay
+                        src={currentVideo.videoUrl}
+                    />
                 </div>
                 <div className="mt-3 lg:mt-8 flex flex-wrap items-center gap-4">
                     {currentVideo.words.map((word) => (
