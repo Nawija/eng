@@ -1,0 +1,22 @@
+[
+    {
+        "id": "video1",
+        "title": "Basic English Phrases",
+        "description": "Learn some basic English phrases.",
+        "file": "/videos/basic_english_phrases.mp4",
+        "words": ["Hello", "Goodbye", "Please", "Thank you", "Yes", "No"]
+    },
+    {
+        "id": "video2",
+        "title": "Advanced Vocabulary",
+        "description": "Expand your vocabulary with advanced words.",
+        "file": "/videos/advanced_vocabulary.mp4",
+        "words": [
+            "Ambiguous",
+            "Conundrum",
+            "Ephemeral",
+            "Ostentatious",
+            "Serendipity"
+        ]
+    }
+]
