@@ -1,24 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
-import { MdOutlineTranslate, MdPlayArrow, MdPause } from "react-icons/md";
-
-interface Word {
-    w: string;
-    t: string;
-    i: string;
-    a: string;
-}
+import { ImSpinner2 } from "react-icons/im";
+import WordCard from "./WordCard";
+import { Word } from "./Types";
 
 const getLevelData = async (level: string): Promise<Word[]> => {
     const response = await fetch(`/data/level${level.toUpperCase()}.json`);
     return response.json();
 };
 
-const LevelPage = () => {
-    const params = useParams();
-    const level = params.level as string;
+export default function LevelPage() {
+    const { level } = useParams<{ level: string }>();
     const [words, setWords] = useState<Word[]>([]);
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
     const [showTranslation, setShowTranslation] = useState(false);
@@ -31,30 +25,40 @@ const LevelPage = () => {
 
     useEffect(() => {
         if (level) {
-            getLevelData(level).then((data) => {
-                setWords(data);
-                const savedIndex = localStorage.getItem(
-                    `currentWordIndex-${level}`
-                );
-                if (savedIndex !== null) {
-                    setCurrentWordIndex(parseInt(savedIndex));
-                }
+            (async () => {
+                const data = await getLevelData(level);
 
                 const savedRemembered = JSON.parse(
                     localStorage.getItem(`rememberedWords-${level}`) || "[]"
                 );
+
                 setRememberedWords(savedRemembered);
 
-                const savedDifficult = JSON.parse(
-                    localStorage.getItem(`difficultWords-${level}`) || "[]"
+                const filteredData = data.filter(
+                    (word) => !savedRemembered.includes(word.w)
                 );
-                setDifficultWords(savedDifficult);
 
-                const savedDifficultQueue = JSON.parse(
-                    localStorage.getItem(`difficultWordsQueue-${level}`) || "[]"
+                setWords(filteredData);
+
+                const savedIndex = localStorage.getItem(
+                    `currentWordIndex-${level}`
                 );
-                setDifficultWordsQueue(savedDifficultQueue);
-            });
+                if (savedIndex !== null) {
+                    setCurrentWordIndex(parseInt(savedIndex, 10));
+                }
+
+                setDifficultWords(
+                    JSON.parse(
+                        localStorage.getItem(`difficultWords-${level}`) || "[]"
+                    )
+                );
+                setDifficultWordsQueue(
+                    JSON.parse(
+                        localStorage.getItem(`difficultWordsQueue-${level}`) ||
+                            "[]"
+                    )
+                );
+            })();
         }
     }, [level]);
 
@@ -84,11 +88,10 @@ const LevelPage = () => {
         }
     }, [currentWordIndex, level, words]);
 
-    const handleNextWord = () => {
+    const handleNextWord = useCallback(() => {
         setShowTranslation(false);
         let nextIndex = (currentWordIndex + 1) % words.length;
 
-        // Filtrujemy zapamiętane słowa
         let attempts = 0;
         while (
             rememberedWords.includes(words[nextIndex].w) &&
@@ -98,48 +101,50 @@ const LevelPage = () => {
             attempts++;
         }
 
-        // Jeśli wszystkie słowa są zapamiętane, wyświetlamy gratulacje
-        if (attempts === words.length) {
-            setCurrentWordIndex(-1);
-        } else {
-            setCurrentWordIndex(nextIndex);
-        }
-    };
+        setCurrentWordIndex(attempts === words.length ? -1 : nextIndex);
+    }, [currentWordIndex, words, rememberedWords]);
 
-    const handleToggleTranslation = () => {
+    const handleToggleTranslation = useCallback(() => {
         setShowTranslation((prevShow) => !prevShow);
-    };
+    }, []);
 
-    const handleRememberWord = () => {
+    const handleRememberWord = useCallback(() => {
         const currentWord = words[currentWordIndex].w;
-        setRememberedWords([...rememberedWords, currentWord]);
+        setRememberedWords((prev) => [...prev, currentWord]);
         handleNextWord();
-    };
+    }, [currentWordIndex, words, handleNextWord]);
 
-    const handleDifficultWord = () => {
+    const handleDifficultWord = useCallback(() => {
         const currentWord = words[currentWordIndex].w;
-        setDifficultWords([...difficultWords, currentWord]);
-        setDifficultWordsQueue([
-            ...difficultWordsQueue,
-            { word: currentWord, timeAdded: new Date().getTime() },
+        setDifficultWords((prev) => [...prev, currentWord]);
+        setDifficultWordsQueue((prev) => [
+            ...prev,
+            { word: currentWord, timeAdded: Date.now() },
         ]);
         handleNextWord();
-    };
+    }, [currentWordIndex, words, handleNextWord]);
 
-    const playAudio = (audioPath: string) => {
+    const playAudio = useCallback((audioPath: string) => {
         const audio = new Audio(audioPath);
         setIsPlaying(true);
         audio.play();
-        audio.onended = () => {
-            setIsPlaying(false);
-        };
-    };
+        audio.onended = () => setIsPlaying(false);
+    }, []);
 
-    if (!words.length) {
-        return <div>Loading...</div>;
+    if (!words.length && rememberedWords.length === 0) {
+        return (
+            <div className="flex flex-col items-center justify-center py-24">
+                <ImSpinner2
+                    size={44}
+                    className="animate-spin text-emerald-600"
+                />
+                <span className="mt-4 font-semibold tracking-wider">
+                    Loading<span className="text-emerald-600">...</span>
+                </span>
+            </div>
+        );
     }
 
-    // Sprawdzenie, czy wszystkie słowa zostały zapamiętane
     if (rememberedWords.length === words.length || currentWordIndex === -1) {
         return (
             <div className="text-emerald-600 text-xl lg:text-4xl flex items-center font-bold justify-center w-full h-[40vh]">
@@ -153,51 +158,15 @@ const LevelPage = () => {
     return (
         <div className="lg:p-12 text-center">
             <h1 className="text-2xl mb-8">Poziom {level.toUpperCase()}</h1>
-            <div className="bg-white p-12 rounded-xl shadow-lg h-[50vh] inline-flex flex-col items-center justify-between">
-                <div>
-                    <p className="text-2xl">{currentWord.w}</p>
-                    {showTranslation && (
-                        <>
-                            <p className="text-lg text-gray-600 my-2 border-t">
-                                {currentWord.t}
-                            </p>
-                            <img src={currentWord.i} className="h-44 mt-2" />
-                        </>
-                    )}
-                </div>
-                <div className="mt-8 flex justify-center space-x-3">
-                    <button
-                        onClick={handleToggleTranslation}
-                        className="p-2 bg-gradient-to-tr from-blue-500 to-blue-600 text-white rounded-lg shadow-xl"
-                    >
-                        <MdOutlineTranslate size={22} />
-                    </button>
-                    <button
-                        onClick={() => playAudio(currentWord.a)}
-                        className="p-2 bg-gradient-to-tr from-purple-500 to-purple-600 text-white rounded-lg shadow-xl"
-                    >
-                        {isPlaying ? (
-                            <MdPause size={22} />
-                        ) : (
-                            <MdPlayArrow size={22} />
-                        )}
-                    </button>
-                    <button
-                        onClick={handleRememberWord}
-                        className="px-4 py-2 bg-gradient-to-tr from-green-500 to-green-600 text-white rounded-lg shadow-xl"
-                    >
-                        Łatwe
-                    </button>
-                    <button
-                        onClick={handleDifficultWord}
-                        className="px-4 py-2 bg-gradient-to-tr from-red-500 to-red-700 text-white rounded-lg shadow-xl"
-                    >
-                        Trudne
-                    </button>
-                </div>
-            </div>
+            <WordCard
+                word={currentWord}
+                showTranslation={showTranslation}
+                isPlaying={isPlaying}
+                onToggleTranslation={handleToggleTranslation}
+                onPlayAudio={playAudio}
+                onRememberWord={handleRememberWord}
+                onDifficultWord={handleDifficultWord}
+            />
         </div>
     );
-};
-
-export default LevelPage;
+}
