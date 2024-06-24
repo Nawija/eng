@@ -1,11 +1,11 @@
 [
     {
-        "videoUrl": "../videos/short1.mov",
+        "videoUrl": "../videos/10sec.mp4",
         "words": ["would", "wood", "world", "wrub"],
         "correctWord": "would"
     },
     {
-        "videoUrl": "../videos/short1.mov",
+        "videoUrl": "../videos/10sec.mp4",
         "words": ["car", "bike", "train", "plane"],
         "correctWord": "bike"
     }
