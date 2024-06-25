@@ -19,7 +19,6 @@ export default function WordCard({
                         <p className="text-lg text-gray-600 my-2 border-t">
                             {word.t}
                         </p>
-                        <img src={word.i} className="h-44 mt-2" alt={word.t} />
                     </>
                 )}
             </div>

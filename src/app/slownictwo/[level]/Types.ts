@@ -1,7 +1,6 @@
 export type Word = {
     w: string;
     t: string;
-    i: string;
     a: string;
 };
 export type WordCardProps = {
