@@ -62,7 +62,7 @@ const WordPage = () => {
                     return (
                         <Link
                             key={level}
-                            href={`/slownictwo/${level}`}
+                            href={`/slowka/${level}`}
                             className="p-8 border rounded-xl bg-white shadow-lg"
                         >
                             <div className="mb-2">

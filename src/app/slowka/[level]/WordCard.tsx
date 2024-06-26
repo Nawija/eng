@@ -11,7 +11,7 @@ export default function WordCard({
     onDifficultWord,
 }: WordCardProps) {
     return (
-        <div className="bg-white p-12 rounded-xl shadow-lg h-[50vh] inline-flex flex-col items-center justify-between">
+        <div className="bg-white p-12 rounded-xl shadow-lg h-[40vh] inline-flex flex-col items-center justify-between">
             <div>
                 <p className="text-2xl">{word.w}</p>
                 {showTranslation && (

@@ -157,7 +157,9 @@ export default function LevelPage() {
 
     return (
         <div className="lg:p-12 text-center">
-            <h1 className="text-2xl mb-8">Poziom {level.toUpperCase()}</h1>
+            <h1 className="text-2xl my-8 font-medium text-emerald-600">
+                Poziom {level.toUpperCase()}
+            </h1>
             <WordCard
                 word={currentWord}
                 showTranslation={showTranslation}
