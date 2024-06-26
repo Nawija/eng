@@ -3,9 +3,9 @@ import { IoBook, IoVideocam } from "react-icons/io5";
 
 export const NAV_LINKS = [
     {
-        title: "słownictwo",
+        title: "słówka",
         icon: FaBookmark,
-        href: "/slownictwo",
+        href: "/slowka",
     },
     {
         title: "czytaj",
