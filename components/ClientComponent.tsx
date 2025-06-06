@@ -29,7 +29,7 @@ export default function ClientComponent({
     }
 
     return (
-        <section className="border border-gray-300 p-3 rounded-lg space-y-2 w-full">
+        <section className="border border-gray-300 bg-white shadow-lg p-3 rounded-lg space-y-2 w-full">
             <div className="flex items-center justify-between w-full">
                 <h2 className="text-sm font-semibold text-gray-400 tracking-widest uppercase">
                     {category}
