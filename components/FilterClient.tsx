@@ -55,7 +55,7 @@ export default function FilterClient({
             </aside>
 
             {/* Main content */}
-            <section className="flex-1 space-y-10 p-6">
+            <section className="flex-1 space-y-6 p-6 w-full overflow-hidden">
                 {filteredFiles.map(
                     ({ fileName, rawContent, mdxSource, category }) => (
                         <ClientComponent

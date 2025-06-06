@@ -23,7 +23,7 @@ export default function ClientComponent({
             await navigator.clipboard.writeText(rawContent);
             setCopied(true);
             setTimeout(() => setCopied(false), 1500);
-        } catch (err) {
+        } catch {
             alert("Failed to copy!");
         }
     }
@@ -56,7 +56,9 @@ export default function ClientComponent({
             </div>
             <div className="w-full h-full relative p-2">
                 {showCode ? (
-                    <CodeAndPreview code={rawContent} />
+                    <div className="relative max-h-[60vh] w-[86vw] overflow-y-scroll">
+                        <CodeAndPreview code={rawContent} />
+                    </div>
                 ) : (
                     <MarkdownClient mdxSource={mdxSource} />
                 )}
