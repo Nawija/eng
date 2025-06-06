@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import CodeAndPreview from "./CodeAndPreview";
