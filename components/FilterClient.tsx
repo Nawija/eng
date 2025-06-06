@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import ClientComponent from "./ClientComponent";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import { ArrowBigRight } from "lucide-react";
+import React from 'react';
 
 type FileType = {
     fileName: string;
     rawContent: string;
-    mdxSource: MDXRemoteSerializeResult;
+    compiledContent: React.ReactNode;
+    frontMatter: Record<string, any>;
     category: string;
 };
 
@@ -79,11 +80,12 @@ export default function FilterClient({
                 }`}
             >
                 {filteredFiles.map(
-                    ({ fileName, rawContent, mdxSource, category }) => (
+                    ({ fileName, rawContent, compiledContent, frontMatter, category }) => (
                         <ClientComponent
                             key={fileName + category}
                             rawContent={rawContent}
-                            mdxSource={mdxSource}
+                            compiledContent={compiledContent}
+                            frontMatter={frontMatter}
                             category={category}
                         />
                     )

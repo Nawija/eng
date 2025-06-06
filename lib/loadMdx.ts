@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { serialize } from "next-mdx-remote/serialize";
+import { compileMDX } from 'next-mdx-remote/rsc';
 import remarkGfm from "remark-gfm";
 
 export async function loadAllMdFiles(dir: string) {
@@ -35,22 +35,26 @@ export async function loadAllMdFiles(dir: string) {
             const source = fs.readFileSync(filePath, "utf8");
             const { content, data } = matter(source);
 
-            const mdxSource = await serialize(content, {
-                mdxOptions: {
-                    remarkPlugins: [remarkGfm],
+            // Kompiluj MDX z JSX
+            const { content: compiledContent } = await compileMDX({
+                source: content,
+                options: {
+                    mdxOptions: {
+                        remarkPlugins: [remarkGfm],
+                    },
                 },
-                scope: data,
             });
 
-            // Pobieranie kategorii z nazwy folderu
+            // Pobieranie kategorii z nazwy folderu lub z frontmatter
             const pathParts = relativePath.split(path.sep);
-            const category = pathParts.length > 1 ? pathParts[0] : "root";
+            const category = data.category || (pathParts.length > 1 ? pathParts[0] : "root");
             const fileName = path.basename(relativePath);
 
             return {
                 fileName,
                 rawContent: content,
-                mdxSource,
+                compiledContent,
+                frontMatter: data,
                 category,
             };
         })

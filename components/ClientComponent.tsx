@@ -1,22 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
 import CodeAndPreview from "./CodeAndPreview";
 import MarkdownClient from "./MarkdownClient";
 import { CodeXml, Copy } from "lucide-react";
+import React from 'react';
 
-type MdxType = {
+type ClientComponentProps = {
     rawContent: string;
-    mdxSource: MDXRemoteSerializeResult;
+    compiledContent: React.ReactNode;
     category: string;
+    frontMatter?: Record<string, any>;
 };
 
 export default function ClientComponent({
     rawContent,
-    mdxSource,
+    compiledContent,
     category,
-}: MdxType) {
+    frontMatter,
+}: ClientComponentProps) {
     const [showCode, setShowCode] = useState(false);
     const [copied, setCopied] = useState(false);
 
@@ -62,7 +64,7 @@ export default function ClientComponent({
                         <CodeAndPreview code={rawContent} />
                     </div>
                 ) : (
-                    <MarkdownClient mdxSource={mdxSource} />
+                    <MarkdownClient compiledContent={compiledContent} />
                 )}
             </div>
         </section>

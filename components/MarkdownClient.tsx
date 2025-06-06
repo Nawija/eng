@@ -1,22 +1,19 @@
 "use client";
 
-import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-
-type CustomMDXComponentProps = {
-    className?: string;
-    children?: React.ReactNode;
-};
+import React from 'react';
 
 type MarkdownClientProps = {
-    mdxSource: MDXRemoteSerializeResult;
-    components?: {
-        [key: string]: React.ComponentType<CustomMDXComponentProps>;
-    };
+    compiledContent: React.ReactNode;
+    className?: string;
 };
 
 export default function MarkdownClient({
-    mdxSource,
-    components,
+    compiledContent,
+    className = "",
 }: MarkdownClientProps) {
-    return <MDXRemote {...mdxSource} components={components} />;
+    return (
+        <div className={`prose prose-sm max-w-none ${className}`}>
+            {compiledContent}
+        </div>
+    );
 }
