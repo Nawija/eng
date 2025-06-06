@@ -9,7 +9,7 @@ type FileType = {
     fileName: string;
     rawContent: string;
     compiledContent: React.ReactNode;
-    frontMatter: Record<string, any>;
+    frontMatter: Record<string, unknown>;
     category: string;
 };
 

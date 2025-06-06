@@ -4,20 +4,19 @@ import { useState } from "react";
 import CodeAndPreview from "./CodeAndPreview";
 import MarkdownClient from "./MarkdownClient";
 import { CodeXml, Copy } from "lucide-react";
-import React from 'react';
+import React from "react";
 
 type ClientComponentProps = {
     rawContent: string;
     compiledContent: React.ReactNode;
     category: string;
-    frontMatter?: Record<string, any>;
+    frontMatter?: Record<string, unknown>;
 };
 
 export default function ClientComponent({
     rawContent,
     compiledContent,
     category,
-    frontMatter,
 }: ClientComponentProps) {
     const [showCode, setShowCode] = useState(false);
     const [copied, setCopied] = useState(false);
