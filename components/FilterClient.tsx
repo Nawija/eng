@@ -30,7 +30,7 @@ export default function FilterClient({
         <div className="flex items-start justify-start relative">
             {/* Sidebar */}
             <aside
-                className={`transform transition-transform duration-300 ease-in-out h-screen bg-zinc-800 p-3 py-6 pr-0 fixed w-[11rem] top-0 z-10 ${
+                className={`transform transition-transform duration-300 ease-in-out h-screen bg-zinc-800 p-3 py-6 pr-0 fixed w-[11rem] top-0 z-[999] ${
                     showSidebar ? "translate-x-0 " : "-translate-x-full"
                 }`}
             >
@@ -73,7 +73,7 @@ export default function FilterClient({
             {/* Main content */}
             <section
                 className={`space-y-6 p-6 overflow-hidden transition-all duration-300 ${
-                    showSidebar ? "w-[calc(100vw-11rem)] ml-[11rem]" : "w-screen"
+                    showSidebar ? "w-screen sm:w-[calc(100vw-11rem)] sm:ml-[11rem]" : "w-screen"
                 }`}
             >
                 {filteredFiles.map(

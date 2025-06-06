@@ -56,7 +56,7 @@ export default function ClientComponent({
             </div>
             <div className="w-full h-full relative p-2">
                 {showCode ? (
-                    <div className="relative max-h-[60vh] w-[86vw] overflow-y-scroll">
+                    <div className="relative max-h-[60vh] w-full overflow-y-scroll">
                         <CodeAndPreview code={rawContent} />
                     </div>
                 ) : (
