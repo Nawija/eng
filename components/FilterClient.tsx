@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import ClientComponent from "./ClientComponent";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 type FileType = {
     fileName: string;
     rawContent: string;
-    mdxSource: any;
+    mdxSource: MDXRemoteSerializeResult;
     category: string;
 };
 

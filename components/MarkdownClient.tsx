@@ -2,11 +2,21 @@
 
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
 
-type MarkdownClientProps = {
-  mdxSource: MDXRemoteSerializeResult;
-  components?: Record<string, React.ComponentType<any>>;
+type CustomMDXComponentProps = {
+    className?: string;
+    children?: React.ReactNode;
 };
 
-export default function MarkdownClient({ mdxSource, components }: MarkdownClientProps) {
-  return <MDXRemote {...mdxSource} components={components} />;
+type MarkdownClientProps = {
+    mdxSource: MDXRemoteSerializeResult;
+    components?: {
+        [key: string]: React.ComponentType<CustomMDXComponentProps>;
+    };
+};
+
+export default function MarkdownClient({
+    mdxSource,
+    components,
+}: MarkdownClientProps) {
+    return <MDXRemote {...mdxSource} components={components} />;
 }
