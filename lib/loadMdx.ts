@@ -26,6 +26,7 @@ export async function loadAllMdFiles(dir: string) {
                 fileName,
                 rawContent: content,
                 mdxSource,
+                category: data.category || "uncategorized",
             };
         })
     );

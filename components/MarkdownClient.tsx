@@ -1,7 +1,6 @@
 "use client";
 
 import { MDXRemote, MDXRemoteSerializeResult } from "next-mdx-remote";
-import { ReactNode } from "react";
 
 type MarkdownClientProps = {
   mdxSource: MDXRemoteSerializeResult;

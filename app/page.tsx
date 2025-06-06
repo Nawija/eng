@@ -1,19 +1,13 @@
-import CodeAndPreview from "@/components/CodeAndPreview";
 import { loadAllMdFiles } from "../lib/loadMdx";
-import MarkdownClient from "@/components/MarkdownClient";
+import FilterClient from "@/components/FilterClient";
 
 export default async function HomePage() {
-  const allFiles = await loadAllMdFiles("content");
+    const allFiles = await loadAllMdFiles("content");
+    const categories = Array.from(new Set(allFiles.map((f) => f.category)));
 
-  return (
-    <main className="p-6 max-w-3xl mx-auto space-y-10">
-      {allFiles.map(({ fileName, rawContent, mdxSource }) => (
-        <section key={fileName} className="border p-4 rounded-md">
-          <h2 className="mb-4 text-xl font-semibold">{fileName}</h2>
-          <CodeAndPreview code={rawContent} />
-          <MarkdownClient mdxSource={mdxSource} />
-        </section>
-      ))}
-    </main>
-  );
+    return (
+        <main>
+            <FilterClient allFiles={allFiles} categories={categories} />
+        </main>
+    );
 }
