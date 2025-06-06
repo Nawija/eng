@@ -8,6 +8,7 @@ export default async function HomePage() {
     return (
         <main>
             <FilterClient allFiles={allFiles} categories={categories} />
+           
         </main>
     );
 }
